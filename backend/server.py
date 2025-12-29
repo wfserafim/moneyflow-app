@@ -1,12 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-import random
 
 app = FastAPI()
 
-# Permite que o Frontend converse com o Backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,7 +31,7 @@ class Goal(BaseModel):
     deadline: str
     priority: str
 
-# --- DADOS MOCKADOS (Exemplo para o site não abrir vazio) ---
+# --- DADOS MOCKADOS ---
 transactions = [
     {"id": 1, "description": "Salário Mensal", "amount": 8500.00, "type": "income", "category": "Salário", "date": "2023-10-01", "bank": "Itaú"},
     {"id": 2, "description": "Supermercado Extra", "amount": 850.45, "type": "expense", "category": "Alimentação", "date": "2023-10-05", "bank": "Nubank"},
@@ -49,7 +47,6 @@ stocks = [
 
 goals = [
     {"id": 1, "name": "Reserva de Emergência", "target_amount": 50000.00, "current_amount": 15000.00, "deadline": "2025-12-01", "priority": "Alta"},
-    {"id": 2, "name": "Viagem Férias", "target_amount": 10000.00, "current_amount": 2500.00, "deadline": "2024-07-01", "priority": "Média"},
 ]
 
 # --- ENDPOINTS ---
@@ -57,12 +54,6 @@ goals = [
 @app.get("/api/transactions")
 def get_transactions():
     return transactions
-
-@app.post("/api/transactions")
-def create_transaction(tx: Transaction):
-    tx.id = len(transactions) + 1
-    transactions.append(tx.dict())
-    return tx
 
 @app.get("/api/dashboard/summary")
 def get_summary():
