@@ -1,7 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/server.py" }
-  ],
   "builds": [
     {
       "src": "backend/server.py",
@@ -12,5 +9,10 @@
       "use": "@vercel/static-build",
       "config": { "distDir": "build" }
     }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend/server.py" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/frontend/index.html" }
   ]
 }
